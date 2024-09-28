@@ -62,11 +62,40 @@ router.post("/signup", async (req, res) => {
   }
 });
 router.post("/login", async (req, res) => {
-  console.log("Login route");
+  try {
+    const { username, password } = req.body;
+
+    //if the fields are empty
+    if (!username || !password)
+      return res.status(400).json({ error: "All fields are required" });
+
+    const user = await User.findOne({ username });
+
+    //if the username doesn't exist
+    if (!user)
+      return res.status(404).json({ error: "Username does not exist" });
+
+    //if the username exists
+    const comparePassword = bcryptjs.compare(password, user.password);
+
+    if (!comparePassword)
+      return res.status(400).json({ error: "Passwords did not match" });
+
+    //generate jwt if passwords match
+    generateTokenAndSetCookie(user._id, res);
+
+    res.status(200).json({
+      message: `${user.fullName} logged in succefully`,
+      user: { ...user._doc, password: undefined },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 router.post("/logout", async (req, res) => {
-  console.log("Logout route");
+  const tokenedToken = res.clearCookie("jwt");
+  res.status(200).json({ message: "Jwt token cleared successfully" });
 });
 
 export { router as authRoutes };
