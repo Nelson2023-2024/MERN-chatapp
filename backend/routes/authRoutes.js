@@ -94,8 +94,12 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/logout", async (req, res) => {
-  const tokenedToken = res.clearCookie("jwt");
-  res.status(200).json({ message: "Jwt token cleared successfully" });
+  try {
+    const tokenedToken = res.clearCookie("jwt");
+    res.status(200).json({ message: "Jwt token cleared successfully" });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
 });
 
 export { router as authRoutes };
