@@ -1,6 +1,7 @@
 import { Router } from "express";
 import bcryptjs from "bcryptjs";
 import { User } from "../models/user.model.js";
+import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 const router = Router();
 
@@ -43,6 +44,7 @@ router.post("/signup", async (req, res) => {
     });
     if (newUser) {
       //generate JWT token
+      generateTokenAndSetCookie(newUser._id, res);
       await newUser.save();
 
       res.status(201).json({
