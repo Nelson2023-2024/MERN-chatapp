@@ -6,6 +6,26 @@ import { Conversations } from "../models/conversation.model.js";
 import { Message } from "../models/message.model.js";
 
 const router = Router();
+
+router.get("/:id", protectRoute, async (req, res) => {
+  try {
+    const { id: recipientId } = req.params;
+    const senderId = req.user._id;
+
+    const chatConversation = await Conversations.findOne({
+      participants: { $all: [senderId, recipientId] },
+    }).populate("messages");
+
+    if (!chatConversation) return res.status(404).json([]);
+
+    //if the conversation exists
+    res.status(200).json(chatConversation.messages);
+  } catch (error) {
+    console.log("Error in the getmessage controller", error.message);
+
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 router.post("/send/:id", protectRoute, async (req, res) => {
   try {
     const { message } = req.body;
