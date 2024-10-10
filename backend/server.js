@@ -4,6 +4,7 @@ import { authRoutes } from "./routes/authRoutes.js";
 import { connectToMongoDB } from "./db/connectToMongoDB.js";
 import { messageRoutes } from "./routes/messageRoutes.js";
 import cookieParser from "cookie-parser";
+import { userRoutes } from "./routes/userRoute.js";
 
 configDotenv();
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, async () => {
   await connectToMongoDB();
