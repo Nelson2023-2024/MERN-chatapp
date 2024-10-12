@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import protectRoute from "../middleware/protectRoutes.js";
 import { Conversations } from "../models/conversation.model.js";
 import { Message } from "../models/message.model.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 const router = Router();
 
@@ -57,10 +58,17 @@ router.post("/send/:id", protectRoute, async (req, res) => {
     // await newMessage.save() 1s
     // await conversation.save() 1s
 
-    //SOCKET IO functionality
-
     //run in parrarel
     await Promise.all([newMessage.save(), conversation.save()]);
+
+    //SOCKET IO functionality
+    const receiverSocketId = getReceiverSocketId(receiverId);
+
+    //if not undefined
+    if (receiverSocketId) {
+      //io.to send message to a specific client
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json({ newMessage });
   } catch (error) {
