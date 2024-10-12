@@ -22,6 +22,9 @@ const Message = ({ message }) => {
 
   const bubleBgColor = fromMe ? "bg-blue-500" : "";
 
+  //added for real time massages
+  const shakeClass = message.shouldShake ? "shake" : "";
+
   return (
     <div className={`chat ${chatClassName}`}>
       <div className="chat-image avatar">
@@ -29,10 +32,12 @@ const Message = ({ message }) => {
           <img alt="Tailwind CSS chat bubble component" src={profilePic} />
         </div>
       </div>
-      <div className={`chat-bubble pb-2 text-white  ${bubleBgColor}`}>
+      <div
+        className={`chat-bubble pb-2 text-white  ${bubleBgColor} ${shakeClass}`}
+      >
         {message.message}
       </div>
-      <div className="flex text-white items-center gap-1 text-xs opacity-50 chat-footer">
+      <div className="flex items-center gap-1 text-xs text-white opacity-50 chat-footer">
         {formatedTime}
       </div>
     </div>
