@@ -5,10 +5,10 @@ import { connectToMongoDB } from "./db/connectToMongoDB.js";
 import { messageRoutes } from "./routes/messageRoutes.js";
 import cookieParser from "cookie-parser";
 import { userRoutes } from "./routes/userRoute.js";
+import { app, server } from "./socket/socket.js";
 
 configDotenv();
 
-const app = express();
 const PORT = process.env.PORT;
 
 //extract file from json body
@@ -19,7 +19,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/users", userRoutes);
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   await connectToMongoDB();
   console.log(`Server running on port http://localhost:${PORT}`);
 });
