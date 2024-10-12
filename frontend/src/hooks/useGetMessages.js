@@ -11,7 +11,9 @@ const useGetMessages = () => {
     const getMessages = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/message/${selectedCoversation._id}`);
+        const response = await fetch(
+          `/api/message/${selectedCoversation?._id}`
+        );
         const data = await response.json();
 
         if (data.error) throw new Error(data.error);

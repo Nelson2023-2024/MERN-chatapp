@@ -8,7 +8,7 @@ const useSendMessage = () => {
   const { messages, setMessages, selectedCoversation } = useConversation();
 
   const sendMessage = async (message) => {
-    if (!selectedCoversation || !selectedCoversation._id) {
+    if (!selectedCoversation || !selectedCoversation?._id) {
       toast.error("No conversation selected.");
       return;
     }
@@ -16,7 +16,7 @@ const useSendMessage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/message/send/${selectedCoversation._id}`,
+        `/api/message/send/${selectedCoversation?._id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

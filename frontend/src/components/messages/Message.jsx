@@ -8,11 +8,11 @@ const Message = ({ message }) => {
   const user = authUser?.user;
 
   const { selectedCoversation } = useConversation();
-  const fromMe = message.senderId === user?._id;
+  const fromMe = message?.senderId === user?._id;
 
-  console.log("SenderID:", message.senderId, "and auth user is", authUser);
+  console.log("SenderID:", message?.senderId, "and auth user is", authUser);
 
-  const formatedTime = extractTime(message.createdAt);
+  const formatedTime = extractTime(message?.createdAt);
 
   const chatClassName = fromMe ? "chat-end" : " chat-start";
 
@@ -23,7 +23,7 @@ const Message = ({ message }) => {
   const bubleBgColor = fromMe ? "bg-blue-500" : "";
 
   //added for real time massages
-  const shakeClass = message.shouldShake ? "shake" : "";
+  const shakeClass = message?.shouldShake ? "shake" : "";
 
   return (
     <div className={`chat ${chatClassName}`}>
@@ -35,7 +35,7 @@ const Message = ({ message }) => {
       <div
         className={`chat-bubble pb-2 text-white  ${bubleBgColor} ${shakeClass}`}
       >
-        {message.message}
+        {message?.message}
       </div>
       <div className="flex items-center gap-1 text-xs text-white opacity-50 chat-footer">
         {formatedTime}
