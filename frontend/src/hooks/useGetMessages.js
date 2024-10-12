@@ -17,7 +17,6 @@ const useGetMessages = () => {
         if (data.error) throw new Error(data.error);
 
         setMessages(data);
-        JSON.stringify(messages);
       } catch (error) {
         toast.error(error.message);
       } finally {

@@ -5,15 +5,19 @@ import useConversation from "../../zustand/useConversation";
 const Message = ({ message }) => {
   const { authUser } = useAuthContext();
 
+  const user = authUser?.user;
+
   const { selectedCoversation } = useConversation();
-  const fromMe = message.senderId === authUser._id;
+  const fromMe = message.senderId === user?._id;
+
+  console.log("SenderID:", message.senderId, "and auth user is", authUser);
 
   const formatedTime = extractTime(message.createdAt);
 
   const chatClassName = fromMe ? "chat-end" : " chat-start";
 
   const profilePic = fromMe
-    ? authUser.profilePic
+    ? user?.profilePic
     : selectedCoversation?.profilePic;
 
   const bubleBgColor = fromMe ? "bg-blue-500" : "";
